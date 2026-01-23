@@ -1,4 +1,4 @@
-﻿using RomanCalculator.UI;
+﻿using Calculator.UI;
 
 class Program
 {

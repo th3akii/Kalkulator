@@ -1,8 +1,8 @@
 using Spectre.Console;
-using RomanCalculator.Core;
-using RomanCalculator.Tests;
+using Calculator.Core;
+using Calculator.Tests;
 
-namespace RomanCalculator.UI;
+namespace Calculator.UI;
 
 public class TerminalUI
 {
@@ -45,52 +45,19 @@ public class TerminalUI
 	private void Handle(string choice)
 	{
 		var romanUI = new RomanNumbersUI();
+		var devUI = new DevUI();
+		var largeUI = new LargeNumbersUI();
 		switch (choice)
 		{
 			case "Rimski Brojevi":
 				romanUI.ShowRomanMenu();
 				break;
 			case "Kalkulator Velikih Brojeva":
-				AnsiConsole.Clear();
-				AnsiConsole.Write(new Rule($"[white bold]Izabran mod: {choice}[/]").Centered());
-				AnsiConsole.MarkupLine("\nOva funkcionalnost još uvek nije implementirana.");
-				AnsiConsole.MarkupLine("\nPritisnite bilo koji taster za povratak na glavni meni...");
-				Console.ReadKey();
+				largeUI.ShowLargeNumbersMenu();
 				break;
-			case "Developer Mode":
-				ShowDevMenu();
+			case "Dev":
+				devUI.ShowDevMenu();
 				break;
-		}
-	}
-
-	private void ShowDevMenu()
-	{
-		while (true)
-		{
-			AnsiConsole.Clear();
-			AnsiConsole.Write(new Rule("[yellow]Developer Mode[/]").Centered());
-
-			var choice = AnsiConsole.Prompt(
-				new SelectionPrompt<string>()
-					.AddChoices(new[]
-					{
-						"Test Validacije Rimskih Brojeva",
-						"Nazad"
-					})
-					.HighlightStyle(new Style(Color.Yellow, decoration: Decoration.Bold))
-			);
-
-			switch (choice)
-			{
-				case "Test Validacije Rimskih Brojeva":
-					AnsiConsole.Clear();
-					RomanNumberValidationTest.RunTests();
-					AnsiConsole.MarkupLine("\nPritisnite bilo koji taster za povratak...");
-					Console.ReadKey();
-					break;
-				case "Nazad":
-					return;
-			}
 		}
 	}
 }
