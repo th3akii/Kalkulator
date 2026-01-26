@@ -69,7 +69,7 @@ namespace Calculator.UI
             errorText = null;
             continue;
           default:
-            errorText = "Dostupano je samo sabiranje (+), oduzimanje (-) i množenje (*)!";
+            errorText = "Dostupano je samo sabiranje (+), oduzimanje (-), množenje (*) i deljenje(/)!";
             resultText = "";
             continue;
         }
@@ -87,19 +87,33 @@ namespace Calculator.UI
     private string FormatNumber(string number)
     {
       if (string.IsNullOrEmpty(number)) return number;
-      
+
+      int decimalIndex = number.IndexOf('.');
+      string integerPart = decimalIndex >= 0 ? number.Substring(0, decimalIndex) : number;
+      string fractionalPart = decimalIndex >= 0 ? number.Substring(decimalIndex) : "";
+
+      string sign = "";
+      if (integerPart.Length > 0 && (integerPart[0] == '-' || integerPart[0] == '+'))
+      {
+        sign = integerPart.Substring(0, 1);
+        integerPart = integerPart.Substring(1);
+      }
+
       var result = new System.Text.StringBuilder();
       int count = 0;
 
-      for (int i = number.Length - 1; i >= 0; i--)
+      for (int i = integerPart.Length - 1; i >= 0; i--)
       {
         if (count > 0 && count % 3 == 0)
         {
           result.Insert(0, '\u200a');
         }
-        result.Insert(0, number[i]);
+        result.Insert(0, integerPart[i]);
         count++;
       }
+
+      if (!string.IsNullOrEmpty(sign)) result.Insert(0, sign);
+      result.Append(fractionalPart);
 
       return result.ToString();
     }
